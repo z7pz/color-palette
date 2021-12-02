@@ -1,206 +1,97 @@
-(async () => {
-    const canvas = document.getElementById('myCanvas');
-    var ctx = canvas.getContext('2d');
+class ColorPallete {
 
-    const colors = [
-        "AliceBlue",
-        "AntiqueWhite",
-        "Aqua",        "DarkSlateBlue",
-        "DarkSlateGray",
-        "DarkSlateGrey",
-        "DarkTurquoise",
-        "DarkViolet",
-        "DeepPink",
-        "DeepSkyBlue",
-        "DimGray",
-        "DimGrey",
-        "DodgerBlue",      "HotPink",
-        "IndianRed",
-        "Indigo",
-        "Ivory",
-        "Khaki",
-        "Lavender",
-        "LavenderBlush",
-        "LawnGreen",
-        "LemonChiffon",
-        "LightBlue",
-        "LightCoral",
-        "LightCyan",
-        "LightGoldenRodYellow",
-        "LightGray",
-        "LightGrey",
-        "LightGreen",
-        "LightPink",
-        "LightSalmon",
-        "LightSeaGreen",
-        "LightSkyBlue",
-        "LightSlateGray",
-        "LightSlateGrey",
-        "LightSteelBlue",
-        "LightYellow",
-        "Lime",
-        "LimeGreen",
-        "Linen",
-        "Magenta",
-        "Maroon",
-        "MediumAquaMarine",
-        "MediumBlue",
-        "MediumOrchid",
-        "MediumPurple",
-        "MediumSeaGreen",
-        "MediumSlateBlue",
-        "MediumSpringGreen",
-        "MediumTurquoise",
-        "MediumVioletRed",
-        "MidnightBlue",
-        "MintCream",
-        "MistyRose",
-        "Moccasin",
-        "NavajoWhite",
-        "Navy",
-        "OldLace",
-        "Olive",
-        "OliveDrab",
-        "Orange",
-        "OrangeRed",
-        "Orchid",
-        "PaleGoldenRod",
-        "PaleGreen",
-        "PaleTurquoise",
-        "PaleVioletRed",
-        "PapayaWhip",
-        "PeachPuff",
-        "Peru",
-        "Pink",
-        "Plum",
-        "PowderBlue",
-        "Purple",
-        "RebeccaPurple",
-        "Red",
-        "RosyBrown",
-        "RoyalBlue",
-        "SaddleBrown",
-        "Salmon",
-        "SandyBrown",
-        "SeaGreen",
-        "SeaShell",
-        "Sienna",
-        "Silver",
-        "SkyBlue",
-        "SlateBlue",
-        "SlateGray",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "SlateGrey",
-        "Snow",
-        "SpringGreen",
-        "SteelBlue",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Tan",
-        "Teal",
-        "Thistle",
-        "Tomato",
-        "Turquoise",
-        "Violet",
-        "Wheat",
-        "White",
-        "WhiteSmoke",
-        "Yellow",
-        "YellowGreen",
-    ];
+    /**
+     * 
+     * @param {String} id
+     * @param {String} background
+     * @param {Array<String>} colors 
+     */
+    constructor(id, background, colors, ) {
+        this.id = id;
+        this.background = background;
+        this.colors = colors;
+        this.canvas = document.getElementById(this.id);
+        this.ctx = this.canvas.getContext('2d');
 
-    let font_size = 26
-    let cube_per_line = 11;
-    let x_position = 0;
-    let y_position = 0;
-
-  async  function init() {
-       await setBackgroud("background.jpg", 0, 0)
-        for (let i = 0; i < colors.length; i++) {
-            const ret = draw_cube(i);
-            if (ret == 0) break;
-        }
-
+        this.font_size = 26
+        this.cube_per_line = 11;
+        this.x_position = 0;
+        this.y_position = 0;
     }
 
-    function draw_cube(i) {
-        const width = canvas.scrollWidth / cube_per_line
-        if ((i % cube_per_line === 0) && i !== 0) { y_position = y_position + width; x_position = 0; }
-        ctx.beginPath();
-        ctx.rect(x_position, y_position, width, width);
-        ctx.beginPath();
-        ctx.rect(x_position + (width / 4), y_position + (width / 4), width / 1.7, width / 1.7);
-        ctx.stroke();
-        ctx.fillStyle = colors[i];
-        ctx.fill();
+    async init() {
 
-        ctx.shadowColor = '#898';
-        ctx.shadowBlur = 10;
-        ctx.shadowOffsetX = 0;
-        ctx.shadowOffsetY = 0;
+        await this.setBackgroud(this.background, 0, 0).catch(error => {
+            console.error(error)
+        })
+        for (let i = 0; i < this.colors.length; i++) {
+            const ret = this.draw_cube(i);
+            if (ret == 0) break;
+        }
+        return this;
+    }
+
+    draw_cube(i) {
+        const width = this.canvas.scrollWidth / this.cube_per_line
+        if ((i % this.cube_per_line === 0) && i !== 0) {
+            this.y_position = this.y_position + width;
+            this.x_position = 0;
+        }
+        this.ctx.beginPath();
+        this.ctx.rect(this.x_position, this.y_position, width, width);
+        this.ctx.beginPath();
+        this.ctx.rect(this.x_position + (width / 4), this.y_position + (width / 4), width / 1.7, width / 1.7);
+        this.ctx.stroke();
+        this.ctx.fillStyle = this.colors[i];
+        this.ctx.fill();
+
+        this.ctx.shadowColor = '#898';
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
 
 
-        ctx.closePath();
-        const rgb = colorToRGBA(colors[i])
+        this.ctx.closePath();
+        const rgb = this.colorToRGBA(this.colors[i])
         const brightness = Math.round(((parseInt(rgb[0]) * 299) +
             (parseInt(rgb[1]) * 587) +
             (parseInt(rgb[2]) * 114)) / 1000);
         const textColour = (brightness > 125) ? 'black' : 'white';
 
 
-        ctx.fillStyle = textColour;
-        ctx.font = `${font_size}px Arial`;
-        ctx.textAlign = "center";
-        ctx.fillText(i, x_position + (width / 1.85), (y_position + width) - (width / 2.8));
+        this.ctx.fillStyle = textColour;
+        this.ctx.font = `${this.font_size}px Arial`;
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(i, this.x_position + (width / 1.85), (this.y_position + width) - (width / 2.8));
 
-        x_position = x_position + width;
-        if (y_position >= canvas.scrollWidth) {
+        this.x_position = this.x_position + width;
+        if (this.y_position >= this.canvas.scrollWidth) {
             console.log("limit reached")
-            ctx.clearRect(0, 0, canvas.scrollWidth, canvas.scrollHeight);
-            cube_per_line = cube_per_line + 1;
-            font_size = font_size - 1
-            y_position = 0;
-            x_position = 0;
-            init()
+            this.ctx.clearRect(0, 0, canvas.scrollWidth, canvas.scrollHeight);
+            this.cube_per_line = this.cube_per_line + 1;
+            this.font_size = this.font_size - 1
+            this.y_position = 0;
+            this.x_position = 0;
+            this.init()
             return 0;
         }
         return 1;
     }
-    init();
-
-
-
-    function setBackgroud(img, x, y) {
-    return new Promise((resolve, reject) => {
-        base_image = new Image()
-        base_image.src = img;
-        base_image.onload = function () {
-            ctx.drawImage(base_image, x, y, 1280, 1280);
-            resolve()
-        }
-    }) 
+    async setBackgroud(img, x, y) {
+        return new Promise((resolve, reject) => {
+            let base_image = new Image()
+            base_image.src = img;
+            const ctx = this.ctx;
+            base_image.onload = function () {
+                ctx.drawImage(base_image, x, y, 1280, 1280);
+                resolve()
+            }
+            base_image.onerror = function () {
+                reject("I cant find the background")
+            }
+        })
     }
-
-    function colorToRGBA(color) {
+    colorToRGBA(color) {
         var cvs, ctx;
         cvs = document.createElement('canvas');
         cvs.height = 1;
@@ -210,5 +101,7 @@
         ctx.fillRect(0, 0, 1, 1);
         return ctx.getImageData(0, 0, 1, 1).data;
     }
+}
 
-})()
+
+new ColorPallete("myCanvas", "background.jpg", colors).init();
